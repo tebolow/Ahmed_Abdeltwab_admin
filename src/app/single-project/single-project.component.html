@@ -1,0 +1,20 @@
+<div class="container">
+    <h1>
+        Wingie
+    </h1>
+    <p>
+        This is a brief description about the project.
+    </p>
+    <div class="mainImg">
+        <img [src]="mainImg" width="100%" height="100%">
+    </div>
+    <div class="imgs">
+        <img src="./light_mode.png" width="100%" height="100%" (click)="changeImg($event)">
+        <img src="./dark_mode.png" width="100%" height="100%" (click)="changeImg($event)">
+    </div>
+
+    <p>
+        This is a detailer description about the project.
+    </p>
+    <video src="./where_in_the_world.mkv" controls width="100%" height="100%"></video>
+</div>

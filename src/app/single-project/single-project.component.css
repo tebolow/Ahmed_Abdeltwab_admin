@@ -1,0 +1,30 @@
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    background-color: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+h1 {
+    color: var(--grey-text);
+    font-size: 72px;
+}
+
+p {
+    color: var(--grey-text);
+    font-size: 1.5rem;
+}
+
+.imgs {
+    display: flex;
+    gap: 20px;
+}
+
+.imgs img{
+    width: 400px;
+    cursor: pointer;
+}

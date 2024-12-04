@@ -1,0 +1,42 @@
+.container {
+    background-color: var(--modirate-navy);
+    width: 100%;
+    padding: 10%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.getInTouch {
+    background-color: var(--light-navy);
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    color: var(--grey-text);
+}
+
+p {
+    color: var(--grey-text);
+}
+
+.iconWithText {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.icon :hover {
+    background-color: var(--light-navy);
+    border-radius: 10px;
+}
+
+.socialMedia {
+    display: flex;
+    gap: 10px;
+}

@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+:root {
+    --grey-text: #D1D4DA;
+    --selected: #141D2B;
+    --navy: #030613;
+    --light-navy: #364150;
+    --modirate-navy: #101925;
+}
+
+.modifyButton {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+
+.modifyButton:hover{
+    cursor: pointer;
+    background-color: darkgreen;
+}

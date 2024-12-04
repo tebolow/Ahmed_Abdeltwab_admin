@@ -1,0 +1,75 @@
+.container {
+    background-color: var(--navy);
+    width: 100%;
+    padding: 10%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mainContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+    color: var(--grey-text);
+}
+
+h1 {
+    color: white;
+    font-size: 72px;
+}
+
+.homeLeftText {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 20px;
+}
+
+.iconWithText{
+    display: flex;
+    gap: 10px;
+}
+
+.iconWithTextContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.img {
+    position: absolute;
+    width: 250px;
+    height: auto;
+    z-index: 1;
+    top: -20px;
+    left: -20px;
+    border: 5px solid black;
+}
+
+.lay {
+    position: relative;
+    background-color: var(--light-navy);
+    width: 250px;
+    aspect-ratio: 1
+}
+
+.socialMedia .icon {
+    cursor: pointer;
+}
+
+.socialMedia .icon :hover {
+    background-color: var(--selected);
+    border-radius: 10px;
+}
+
+.socialMedia {
+    display: flex;
+    gap: 10px;
+}

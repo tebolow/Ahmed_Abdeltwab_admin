@@ -1,0 +1,65 @@
+<div class="container">
+    <form action="POST" class="contactForm" (submit)="submitData()">
+        <div class="field">
+            <label for="name">
+                Name
+            </label>
+            <input type="text" placeholder="Name" name="name" class="fieldWidth" required>
+        </div>
+        <div class="field">
+            <label for="description">
+                Description
+            </label>
+            <textarea name="description" placeholder="Description"  class="fieldWidth" id="textarea" required></textarea>
+        </div>
+        <div class="field">
+            <label for="email">
+                Email
+            </label>
+            <input type="text" placeholder="Email" name="email" class="fieldWidth" required>
+        </div>
+        <div class="field">
+            <label for="phoneNumber">
+                Phone number
+            </label>
+            <input type="text" placeholder="Phone number" name="phoneNumber" class="fieldWidth" required>
+        </div>
+        <div class="field">
+            <label for="logo">
+                Logo
+            </label>
+            <input type="file" placeholder="Logo" name="logo" class="fieldWidth fileField" accept="image/*" required>
+        </div>
+        <div class="field">
+            <label for="location">
+                Location
+            </label>
+            <input type="text" placeholder="Location" name="location" class="fieldWidth" required>
+        </div>
+        <div class="field">
+            <label for="availability">
+                Availability
+            </label>
+            <input type="text" placeholder="Availability" name="availability" class="fieldWidth" required>
+        </div>
+        <div class="field">
+            <label for="about">
+                About
+            </label>
+            <textarea name="about" placeholder="About"  class="fieldWidth" id="textarea" required></textarea>
+        </div>
+        <div class="field">
+            <label for="homeImage">
+                Home Image
+            </label>
+            <input type="file" placeholder="Home Image" name="homeImage" class="fieldWidth fileField" accept="image/*" required>
+        </div>
+        <div class="field">
+            <label for="aboutImage">
+                About Image
+            </label>
+            <input type="file" placeholder="About Image" name="aboutImage" class="fieldWidth fileField" accept="image/*" required>
+        </div>
+        <input type="submit" value="Save" class="submitButton">
+    </form>
+</div>
