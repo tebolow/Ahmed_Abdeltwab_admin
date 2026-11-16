@@ -1,26 +1,98 @@
-* {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --grey-text: #D1D4DA;
-    --selected: #141D2B;
-    --navy: #030613;
-    --light-navy: #364150;
-    --modirate-navy: #101925;
+  color-scheme: light dark;
+
+  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+  }
+  &:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+  }
+
+  --bg-primary: light-dark(#F9FAFB, #030613);
+  --bg-secondary: light-dark(#F3F4F6, #101925);
+  --bg-surface: light-dark(#FFFFFF, #141D2B);
+  --bg-elevated: light-dark(#E5E7EB, #364150);
+  --text-primary: light-dark(#111827, #FFFFFF);
+  --text-secondary: light-dark(#4B5563, #D1D4DA);
+  --border-subtle: light-dark(rgba(17, 24, 39, 0.14), rgba(255, 255, 255, 0.18));
+  --accent: light-dark(#D97706, #FACC15);
+  --danger: light-dark(#DC2626, #EF4444);
+  --success: light-dark(#059669, #10B981);
+
+  --grey-text: var(--text-secondary);
+  --selected: var(--bg-surface);
+  --navy: var(--bg-primary);
+  --light-navy: var(--bg-elevated);
+  --modirate-navy: var(--bg-secondary);
+}
+
+html, body {
+  min-height: 100dvh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+code, pre, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
 }
 
 .modifyButton {
-    background-color: green;
-    color: white;
-    padding: 10px;
-    border-radius: 25px;
-    font-size: 1rem;
+  background-color: var(--success);
+  color: #FFFFFF;
+  padding: 0.65rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 44px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
-.modifyButton:hover{
-    cursor: pointer;
-    background-color: darkgreen;
+.modifyButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.status-banner {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-block: 0.75rem;
+}
+
+.status-banner.success {
+  background: color-mix(in srgb, var(--success) 15%, transparent);
+  border: 1px solid var(--success);
+  color: var(--text-primary);
+}
+
+.status-banner.error {
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  border: 1px solid var(--danger);
+  color: var(--text-primary);
 }

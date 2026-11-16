@@ -1,65 +1,132 @@
-<div class="container">
-    <form action="POST" class="contactForm" (submit)="submitData()">
+<main class="container">
+  <section class="form-card" aria-labelledby="site-data-title">
+    <h1 id="site-data-title">Site Data &amp; Live Media Preview</h1>
+    <p class="subtitle">Edit everything shown on the main portfolio and preview exactly how images will appear.</p>
+
+    @if (statusMessage) {
+      <div class="status-banner" [class.error]="isError" [class.success]="!isError" role="status" aria-live="polite">
+        {{ statusMessage }}
+      </div>
+    }
+
+    <form method="POST" class="contactForm" (submit)="submitData($event)">
+      <div class="field">
+        <label for="df-name">Hero Name / Greeting <span aria-hidden="true">*</span></label>
+        <input id="df-name" type="text" name="name" [value]="existingData?.name || ''" placeholder="Hi, I'm Ahmed Abdeltwab 👋" required />
+      </div>
+
+      <div class="field">
+        <label for="df-description">Hero Description <span aria-hidden="true">*</span></label>
+        <textarea id="df-description" name="description" rows="4" [value]="existingData?.description || ''" placeholder="Brief bio for the hero section" required></textarea>
+      </div>
+
+      <div class="grid-two">
         <div class="field">
-            <label for="name">
-                Name
-            </label>
-            <input type="text" placeholder="Name" name="name" class="fieldWidth" required>
+          <label for="df-email">Email <span aria-hidden="true">*</span></label>
+          <input id="df-email" type="email" name="email" autocomplete="email" [value]="existingData?.email || ''" placeholder="you@example.com" required />
         </div>
+
         <div class="field">
-            <label for="description">
-                Description
-            </label>
-            <textarea name="description" placeholder="Description"  class="fieldWidth" id="textarea" required></textarea>
+          <label for="df-phone">Phone Number <span aria-hidden="true">*</span></label>
+          <input id="df-phone" type="tel" name="phone" autocomplete="tel" [value]="existingData?.phone || ''" placeholder="+20..." required />
         </div>
+      </div>
+
+      <div class="grid-two">
         <div class="field">
-            <label for="email">
-                Email
-            </label>
-            <input type="text" placeholder="Email" name="email" class="fieldWidth" required>
+          <label for="df-location">Location <span aria-hidden="true">*</span></label>
+          <input id="df-location" type="text" name="location" [value]="existingData?.location || ''" placeholder="Cairo, Egypt" required />
         </div>
+
         <div class="field">
-            <label for="phoneNumber">
-                Phone number
-            </label>
-            <input type="text" placeholder="Phone number" name="phoneNumber" class="fieldWidth" required>
+          <label for="df-availability">Availability <span aria-hidden="true">*</span></label>
+          <input id="df-availability" type="text" name="availability" [value]="existingData?.availability || ''" placeholder="Available for new projects" required />
         </div>
-        <div class="field">
-            <label for="logo">
-                Logo
-            </label>
-            <input type="file" placeholder="Logo" name="logo" class="fieldWidth fileField" accept="image/*" required>
+      </div>
+
+      <div class="field">
+        <label for="df-about">About Me (separate paragraphs with a blank line) <span aria-hidden="true">*</span></label>
+        <textarea id="df-about" name="about" rows="6" [value]="existingData?.about || ''" placeholder="Detailed about section" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="df-toolkit">Core Full-Stack Toolkit (shown on About page)</label>
+        <div class="skill-input-row">
+          <input
+            #toolkitInput
+            id="df-toolkit"
+            type="text"
+            placeholder="Add technology (e.g. Angular, Node.js) and press Enter"
+            (keydown)="onToolkitKeydown($event, toolkitInput)"
+          />
+          <button type="button" class="add-skill-btn" (click)="addToolkitItem(toolkitInput)">Add</button>
         </div>
-        <div class="field">
-            <label for="location">
-                Location
-            </label>
-            <input type="text" placeholder="Location" name="location" class="fieldWidth" required>
+
+        <div class="skills">
+          @for (item of toolkit; track item) {
+            <span class="skill-chip">
+              <app-tech-icon [name]="item" />
+              <span>{{ item }}</span>
+              <button type="button" class="remove-chip" (click)="removeToolkitItem(item)" [attr.aria-label]="'Remove ' + item">×</button>
+            </span>
+          }
         </div>
-        <div class="field">
-            <label for="availability">
-                Availability
-            </label>
-            <input type="text" placeholder="Availability" name="availability" class="fieldWidth" required>
+      </div>
+
+      <section class="media-preview-section" aria-labelledby="media-preview-heading">
+        <h2 id="media-preview-heading">Main-Site Media &amp; Live Placement Preview</h2>
+
+        <div class="media-grid">
+          <div class="media-card">
+            <label for="df-logo">Navbar Logo</label>
+            <div class="navbar-mock">
+              <img [src]="getLogoSrc()" alt="Navbar logo preview" />
+              <span class="mock-links">Home · Portfolio · About · Contact</span>
+            </div>
+            <input id="df-logo" type="file" name="logo" accept="image/*" (change)="onImageSelected($event, 'logo')" [required]="!existingData?.logo" />
+          </div>
+
+          <div class="media-card">
+            <label for="df-homeImage">Home Hero Image (Auto Ratio)</label>
+            <div class="frame-mock-wrap">
+              <div class="lay-square">
+                <div class="img-square">
+                  <img [src]="getHomeImageSrc()" alt="Home hero preview" />
+                </div>
+              </div>
+            </div>
+            <input id="df-homeImage" type="file" name="homeImage" accept="image/*" (change)="onImageSelected($event, 'homeImage')" [required]="!existingData?.homeImage" />
+          </div>
+
+          <div class="media-card">
+            <label for="df-aboutImage">About Portrait Image (Auto Ratio)</label>
+            <div class="frame-mock-wrap">
+              <div class="lay-portrait">
+                <div class="img-portrait">
+                  <img [src]="getAboutImageSrc()" alt="About portrait preview" />
+                </div>
+              </div>
+            </div>
+            <input id="df-aboutImage" type="file" name="aboutImage" accept="image/*" (change)="onImageSelected($event, 'aboutImage')" [required]="!existingData?.aboutImage" />
+          </div>
+
+          <div class="media-card">
+            <label for="df-cv">CV / Resume (PDF)</label>
+            @if (selectedCvName) {
+              <p class="cv-status">Selected: {{ selectedCvName }}</p>
+            } @else if (existingData?.cv) {
+              <a class="cv-link" [href]="baseURL + '/data/downloadCv'" download>Download current CV</a>
+            } @else {
+              <p class="cv-status">No CV uploaded yet</p>
+            }
+            <input id="df-cv" type="file" name="cv" accept=".pdf,application/pdf" (change)="onCvSelected($event)" />
+          </div>
         </div>
-        <div class="field">
-            <label for="about">
-                About
-            </label>
-            <textarea name="about" placeholder="About"  class="fieldWidth" id="textarea" required></textarea>
-        </div>
-        <div class="field">
-            <label for="homeImage">
-                Home Image
-            </label>
-            <input type="file" placeholder="Home Image" name="homeImage" class="fieldWidth fileField" accept="image/*" required>
-        </div>
-        <div class="field">
-            <label for="aboutImage">
-                About Image
-            </label>
-            <input type="file" placeholder="About Image" name="aboutImage" class="fieldWidth fileField" accept="image/*" required>
-        </div>
-        <input type="submit" value="Save" class="submitButton">
+      </section>
+
+      <button type="submit" class="submitButton" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Saving...' : 'Save Site Data' }}
+      </button>
     </form>
-</div>
+  </section>
+</main>

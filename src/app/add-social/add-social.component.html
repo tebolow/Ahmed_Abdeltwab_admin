@@ -1,23 +1,30 @@
-<div class="container">
-    <form action="POST" class="contactForm">
-        <div class="field">
-            <label for="name">
-                Name
-            </label>
-            <input type="text" placeholder="Name" name="name" class="fieldWidth" required>
-        </div>
-        <div class="field">
-            <label for="link">
-                Link
-            </label>
-            <input type="text" placeholder="Link" name="link" class="fieldWidth" required>
-        </div>
-        <div class="field">
-            <label for="icon">
-                Icon
-            </label>
-            <textarea name="icon" placeholder="Icon"  class="fieldWidth" id="textarea" required></textarea>
-        </div>  
-        <input type="submit" value="Save" class="submitButton">
+<main class="container">
+  <section class="form-card" aria-labelledby="add-social-title">
+    <h1 id="add-social-title">Add Social Media Link</h1>
+
+    @if (errorMessage) {
+      <div class="status-banner error" role="alert">{{ errorMessage }}</div>
+    }
+
+    <form method="POST" class="contactForm" (submit)="addSocial($event)">
+      <div class="field">
+        <label for="soc-name">Platform Name <span aria-hidden="true">*</span></label>
+        <input id="soc-name" type="text" name="name" placeholder="GitHub, LinkedIn, X..." required />
+      </div>
+
+      <div class="field">
+        <label for="soc-link">Profile URL <span aria-hidden="true">*</span></label>
+        <input id="soc-link" type="url" name="link" placeholder="https://github.com/username" required />
+      </div>
+
+      <div class="field">
+        <label for="soc-icon">Icon (SVG markup or Icon Image URL) <span aria-hidden="true">*</span></label>
+        <textarea id="soc-icon" name="icon" rows="5" placeholder="<svg ...>...</svg> or https://..." required></textarea>
+      </div>
+
+      <button type="submit" class="submitButton" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Saving...' : 'Save Social Link' }}
+      </button>
     </form>
-</div>
+  </section>
+</main>

@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './nav/nav.component';
-import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
-import { PortfolioComponent } from './portfolio/portfolio.component';
-import { ContactComponent } from './contact/contact.component';
-import { FooterComponent } from "./footer/footer.component";
-import { SingleProjectComponent } from './single-project/single-project.component';
+import { FooterComponent } from './footer/footer.component';
+import { DataService } from './services/data/data.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +11,13 @@ import { SingleProjectComponent } from './single-project/single-project.componen
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'Ahmed_Abdeltwab_website';
+export class AppComponent implements OnInit {
+  private dataService = inject(DataService);
+  title = 'Ahmed_Abdeltwab_Admin';
+
+  ngOnInit(): void {
+    this.dataService.loadData().subscribe({
+      error: (err) => console.error('Failed to load site data:', err)
+    });
+  }
 }

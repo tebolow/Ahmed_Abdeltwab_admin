@@ -1,42 +1,48 @@
 .container {
-    background-color: var(--modirate-navy);
-    width: 100%;
-    padding: 10%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-subtle);
+  width: 100%;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 6vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
 }
 
 .getInTouch {
-    background-color: var(--light-navy);
-    padding: 10px;
-    border-radius: 15px;
-    border: none;
-    color: var(--grey-text);
+  color: var(--text-primary);
+  background-color: var(--bg-elevated);
+  padding: 0.4rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-p {
-    color: var(--grey-text);
+.lead {
+  color: var(--text-secondary);
+  max-width: 560px;
 }
 
 .iconWithText {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-.icon {
-    cursor: pointer;
-}
-
-.icon :hover {
-    background-color: var(--light-navy);
-    border-radius: 10px;
-}
-
-.socialMedia {
-    display: flex;
-    gap: 10px;
+.copy-btn {
+  min-height: 36px;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
 }

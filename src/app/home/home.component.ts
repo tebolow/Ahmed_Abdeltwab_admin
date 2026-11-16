@@ -1,23 +1,30 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { DataService } from '../services/data/data.service';
+import { SocialsComponent } from '../socials/socials.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [SocialsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-  http = inject(HttpClient);
-  homeData: any;
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private dataService = inject(DataService);
+
+  homeData: any = null;
+  staticURL = environment.staticURL;
+
   ngOnInit(): void {
-    this.homeData = this.http.get(`http://localhost:2300/data/getData`);
+    this.dataService.currentData$.subscribe((data) => {
+      this.homeData = data;
+    });
   }
 
-  modify(){
-    this.router.navigate([`/dataForm`])
+  modify(): void {
+    this.router.navigate(['/dataForm']);
   }
 }

@@ -1,20 +1,65 @@
-<div class="container">
-    <h1>
-        Wingie
-    </h1>
-    <p>
-        This is a brief description about the project.
-    </p>
-    <div class="mainImg">
-        <img [src]="mainImg" width="100%" height="100%">
-    </div>
-    <div class="imgs">
-        <img src="./light_mode.png" width="100%" height="100%" (click)="changeImg($event)">
-        <img src="./dark_mode.png" width="100%" height="100%" (click)="changeImg($event)">
-    </div>
+<main class="container">
+  @if (isLoading) {
+    <p class="status-text">Loading project...</p>
+  } @else if (errorMessage || !project) {
+    <div class="status-banner error">{{ errorMessage || 'Project not found.' }}</div>
+    <button type="button" class="btn-secondary" (click)="goBack()">Back to Portfolio</button>
+  } @else {
+    <article class="project-detail">
+      <div class="top-actions">
+        <button type="button" class="btn-secondary" (click)="goBack()">← Back</button>
+        <button type="button" class="modifyButton" (click)="editProject()">Edit Project</button>
+      </div>
 
-    <p>
-        This is a detailer description about the project.
-    </p>
-    <video src="./where_in_the_world.mkv" controls width="100%" height="100%"></video>
-</div>
+      <header class="project-header">
+        <span class="category-badge">{{ project.category }}</span>
+        <h1>{{ project.name }}</h1>
+        <p class="brief">{{ project.brief }}</p>
+      </header>
+
+      @if (mainImg) {
+        <div class="mainImg">
+          <img [src]="staticURL + mainImg" [alt]="project.name + ' preview'" />
+        </div>
+      }
+
+      @if (galleryImages.length > 1) {
+        <div class="imgs">
+          @for (img of galleryImages; track img) {
+            <button
+              type="button"
+              class="thumb-btn"
+              [class.selected]="mainImg === img"
+              (click)="selectImage(img)"
+            >
+              <img [src]="staticURL + img" [alt]="project.name + ' gallery image'" />
+            </button>
+          }
+        </div>
+      }
+
+      @if (project.skills?.length) {
+        <div class="skills">
+          @for (skill of project.skills; track $index) {
+            <span class="skill-chip">
+              <app-tech-icon [name]="skill" />
+              <span>{{ skill }}</span>
+            </span>
+          }
+        </div>
+      }
+
+      <section class="description-section">
+        <h2>Project Details</h2>
+        <p class="preserve">{{ project.description }}</p>
+      </section>
+
+      @if (project.video) {
+        <section class="video-section">
+          <h2>Demo Video</h2>
+          <video [src]="staticURL + project.video" controls preload="metadata"></video>
+        </section>
+      }
+    </article>
+  }
+</main>

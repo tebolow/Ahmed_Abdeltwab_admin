@@ -1,0 +1,44 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-heading">
+    <h1 id="login-heading">Admin CMS Login</h1>
+    <p class="subtitle">Sign in to manage portfolio data, projects, media, and messages.</p>
+
+    @if (errorMessage) {
+      <div class="status-banner error" role="alert">{{ errorMessage }}</div>
+    }
+
+    <form method="POST" (submit)="onSubmit($event)" class="login-form">
+      <div class="field">
+        <label for="login-key">Username</label>
+        <input
+          id="login-key"
+          name="key"
+          type="text"
+          autocomplete="username"
+          autocorrect="off"
+          autocapitalize="none"
+          spellcheck="false"
+          required
+          placeholder="admin"
+        />
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input
+          id="login-password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          placeholder="••••••••"
+        />
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        {{ isLoading ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+  </section>
+</main>
+

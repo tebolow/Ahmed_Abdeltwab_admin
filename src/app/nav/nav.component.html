@@ -1,21 +1,60 @@
-<div id="nav">
-    <div class="logo">
-        <img src="./Ahmed_Abdeltwab.png" alt="This is Ahmed Abdeltwab's logo" width="100%" height="100%" routerLink="home">
-    </div>
-    
-    <div class="nav_links">
-        <a routerLink="home" routerLinkActive="active">Home</a>
-        <a routerLink="portfolio" routerLinkActive="active">Portfolio</a>
-        <a routerLink="about" routerLinkActive="active">About</a>
-        <a routerLink="contact" routerLinkActive="active">Contact</a>
-        <a routerLink="socials" routerLinkActive="active">Social Media</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" routerLink="/home" (click)="closeMenu()" aria-label="Admin Home">
+      <img
+        [src]="siteData?.logo ? (staticURL + siteData.logo) : './Ahmed_Abdeltwab.png'"
+        alt="Portfolio Logo"
+      />
+    </a>
 
-        <div class="vertical_splitter"></div>
+    <div class="header-actions">
+      <button
+        type="button"
+        class="icon-btn"
+        (click)="theme.toggleTheme()"
+        [attr.aria-label]="theme.currentTheme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+        title="Toggle color theme"
+      >
+        @if (theme.currentTheme() === 'dark') {
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+        } @else {
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        }
+      </button>
 
-        <div class="icon">
-            <svg width="48px" height="48px" viewBox="-5.04 -5.04 34.08 34.08" xmlns="http://www.w3.org/2000/svg" aria-labelledby="nightModeIconTitle" stroke="#D1D4DA" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title id="nightModeIconTitle">Night Mode</title> <path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14z"></path> <path d="M15.899 12.899a4 4 0 0 1-4.797-4.797A4.002 4.002 0 0 0 12 16c1.9 0 3.49-1.325 3.899-3.101z"></path> <path d="M12 5V3M12 21v-2"></path> <path d="M5 12H2h3zM22 12h-3 3zM16.95 7.05L19.07 4.93 16.95 7.05zM4.929 19.071L7.05 16.95 4.93 19.07zM16.95 16.95l2.121 2.121-2.121-2.121zM4.929 4.929L7.05 7.05 4.93 4.93z"></path> </g></svg>        </div>
-        <button class="downloadCV">
-            Download CV
+      @if (auth.isAuthenticated()) {
+        <button
+          type="button"
+          class="menu-toggle"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="menuOpen"
+          aria-controls="admin-primary-nav"
+          aria-label="Toggle navigation menu"
+        >
+          <span>{{ menuOpen ? 'Close' : 'Menu' }}</span>
         </button>
+      }
     </div>
-</div>
+
+    @if (auth.isAuthenticated()) {
+      <nav id="admin-primary-nav" class="nav_links" [class.open]="menuOpen" aria-label="Admin navigation">
+        <a routerLink="/home" routerLinkActive="active" (click)="closeMenu()">Home</a>
+        <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
+        <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a>
+        <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Messages</a>
+        <a routerLink="/socials" routerLinkActive="active" (click)="closeMenu()">Socials</a>
+        <a routerLink="/dataForm" routerLinkActive="active" (click)="closeMenu()">Site Data</a>
+
+        <div class="vertical_splitter" aria-hidden="true"></div>
+
+        <a class="downloadCV" [href]="downloadCvUrl" download>Download CV</a>
+        <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+      </nav>
+    }
+  </div>
+</header>

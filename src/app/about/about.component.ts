@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { DataService } from '../services/data/data.service';
 
 @Component({
   selector: 'app-about',
@@ -9,16 +10,20 @@ import { Router } from '@angular/router';
   templateUrl: './about.component.html',
   styleUrl: './about.component.css'
 })
-export class AboutComponent {
-  http = inject(HttpClient);
-  homeData: any;
-  constructor(private router: Router) {}
+export class AboutComponent implements OnInit {
+  private router = inject(Router);
+  private dataService = inject(DataService);
+
+  data: any = null;
+  staticURL = environment.staticURL;
+
   ngOnInit(): void {
-    this.homeData = this.http.get(`http://localhost:2300/data/getData`);
-    console.log(this.homeData);
+    this.dataService.currentData$.subscribe((data) => {
+      this.data = data;
+    });
   }
 
-  modify(){
-    this.router.navigate([`/dataForm`])
+  modify(): void {
+    this.router.navigate(['/dataForm']);
   }
 }
