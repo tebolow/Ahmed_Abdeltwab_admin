@@ -14,3 +14,4 @@ export class MediaUrlPipe implements PipeTransform {
     return environment.staticURL + value;
   }
 }
+
