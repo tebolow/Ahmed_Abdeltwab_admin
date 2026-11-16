@@ -3,11 +3,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { DataService } from '../services/data/data.service';
+import { MediaUrlPipe } from '../shared/pipes/media-url.pipe';
 
 @Component({
   selector: 'app-add-project',
   standalone: true,
-  imports: [],
+  imports: [MediaUrlPipe],
   templateUrl: './add-project.component.html',
   styleUrl: './add-project.component.css'
 })

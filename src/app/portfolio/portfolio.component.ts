@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { DataService } from '../services/data/data.service';
 import { TechIconComponent } from '../shared/tech-icon/tech-icon.component';
+import { MediaUrlPipe } from '../shared/pipes/media-url.pipe';
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [TechIconComponent],
+  imports: [TechIconComponent, MediaUrlPipe],
   templateUrl: './portfolio.component.html',
   styleUrl: './portfolio.component.css'
 })

@@ -30,7 +30,7 @@
       <div class="lay">
         <div class="img">
           <img
-            [src]="homeData?.homeImage ? (staticURL + homeData.homeImage) : './square.jpeg'"
+            [src]="homeData?.homeImage ? (homeData.homeImage | mediaUrl) : './square.jpeg'"
             alt="Profile hero photo"
           />
         </div>

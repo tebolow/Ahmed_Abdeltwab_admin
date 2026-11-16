@@ -7,7 +7,7 @@
         <div class="lay">
           <div class="img">
             <img
-              [src]="data?.aboutImage ? (staticURL + data.aboutImage) : './profile.JPG'"
+              [src]="data?.aboutImage ? (data.aboutImage | mediaUrl) : './profile.JPG'"
               alt="About photo"
             />
           </div>

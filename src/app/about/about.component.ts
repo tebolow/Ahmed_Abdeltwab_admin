@@ -2,11 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { DataService } from '../services/data/data.service';
+import { MediaUrlPipe } from '../shared/pipes/media-url.pipe';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [],
+  imports: [MediaUrlPipe],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css'
 })

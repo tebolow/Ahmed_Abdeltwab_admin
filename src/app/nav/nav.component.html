@@ -2,7 +2,7 @@
   <div class="header-inner">
     <a class="logo" routerLink="/home" (click)="closeMenu()" aria-label="Admin Home">
       <img
-        [src]="siteData?.logo ? (staticURL + siteData.logo) : './Ahmed_Abdeltwab.png'"
+        [src]="siteData?.logo ? (siteData.logo | mediaUrl) : './Ahmed_Abdeltwab.png'"
         alt="Portfolio Logo"
       />
     </a>

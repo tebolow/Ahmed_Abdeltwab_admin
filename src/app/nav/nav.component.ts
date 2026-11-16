@@ -4,11 +4,12 @@ import { AuthService } from '../services/auth/auth.service';
 import { ThemeService } from '../services/theme/theme.service';
 import { DataService } from '../services/data/data.service';
 import { environment } from '../../environments/environment';
+import { MediaUrlPipe } from '../shared/pipes/media-url.pipe';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, MediaUrlPipe],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
 })

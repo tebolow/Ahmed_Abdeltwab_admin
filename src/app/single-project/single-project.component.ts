@@ -3,11 +3,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { TechIconComponent } from '../shared/tech-icon/tech-icon.component';
+import { MediaUrlPipe } from '../shared/pipes/media-url.pipe';
 
 @Component({
   selector: 'app-single-project',
   standalone: true,
-  imports: [TechIconComponent],
+  imports: [TechIconComponent, MediaUrlPipe],
   templateUrl: './single-project.component.html',
   styleUrl: './single-project.component.css'
 })

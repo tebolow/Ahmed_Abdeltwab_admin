@@ -44,7 +44,7 @@
         <div class="field">
           <label for="proj-thumb">Thumbnail Image {{ projectId ? '(optional to replace)' : '*' }}</label>
           @if (existingProject?.thumb) {
-            <img class="preview-img" [src]="staticURL + existingProject.thumb" alt="Current thumbnail" />
+            <img class="preview-img" [src]="existingProject.thumb | mediaUrl" alt="Current thumbnail" />
           }
           <input id="proj-thumb" type="file" name="thumb" accept="image/*" [required]="!projectId" />
         </div>

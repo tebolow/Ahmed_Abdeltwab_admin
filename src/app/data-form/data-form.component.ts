@@ -102,22 +102,24 @@ export class DataFormComponent implements OnInit, OnDestroy {
     this.toolkit = this.toolkit.filter((t) => t !== item);
   }
 
+  private resolveMedia(val: string | undefined, fallback: string): string {
+    if (!val) return fallback;
+    return /^(https?:)?\/\//i.test(val) ? val : this.staticURL + val;
+  }
+
   getLogoSrc(): string {
     if (this.logoPreview) return this.logoPreview;
-    if (this.existingData?.logo) return this.staticURL + this.existingData.logo;
-    return './Ahmed_Abdeltwab.png';
+    return this.resolveMedia(this.existingData?.logo, './Ahmed_Abdeltwab.png');
   }
 
   getHomeImageSrc(): string {
     if (this.homeImagePreview) return this.homeImagePreview;
-    if (this.existingData?.homeImage) return this.staticURL + this.existingData.homeImage;
-    return './square.jpeg';
+    return this.resolveMedia(this.existingData?.homeImage, './square.jpeg');
   }
 
   getAboutImageSrc(): string {
     if (this.aboutImagePreview) return this.aboutImagePreview;
-    if (this.existingData?.aboutImage) return this.staticURL + this.existingData.aboutImage;
-    return './profile.JPG';
+    return this.resolveMedia(this.existingData?.aboutImage, './profile.JPG');
   }
 
   submitData(event: Event): void {

@@ -19,7 +19,7 @@
 
       @if (mainImg) {
         <div class="mainImg">
-          <img [src]="staticURL + mainImg" [alt]="project.name + ' preview'" />
+          <img [src]="mainImg | mediaUrl" [alt]="project.name + ' preview'" />
         </div>
       }
 
@@ -32,7 +32,7 @@
               [class.selected]="mainImg === img"
               (click)="selectImage(img)"
             >
-              <img [src]="staticURL + img" [alt]="project.name + ' gallery image'" />
+              <img [src]="img | mediaUrl" [alt]="project.name + ' gallery image'" />
             </button>
           }
         </div>
@@ -57,7 +57,7 @@
       @if (project.video) {
         <section class="video-section">
           <h2>Demo Video</h2>
-          <video [src]="staticURL + project.video" controls preload="metadata"></video>
+          <video [src]="project.video | mediaUrl" controls preload="metadata"></video>
         </section>
       }
     </article>
