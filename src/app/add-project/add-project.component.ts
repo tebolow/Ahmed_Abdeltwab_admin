@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { DataService } from '../services/data/data.service';
+import { DriveUploadService } from '../services/drive/drive-upload.service';
 import { MediaUrlPipe } from '../shared/pipes/media-url.pipe';
 
 @Component({
@@ -17,6 +18,7 @@ export class AddProjectComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private dataService = inject(DataService);
+  private driveUpload = inject(DriveUploadService);
 
   baseURL = environment.apiUrl;
   staticURL = environment.staticURL;
@@ -72,7 +74,7 @@ export class AddProjectComponent implements OnInit {
     this.skills = this.skills.filter((s) => s !== skill);
   }
 
-  saveProject(event: Event): void {
+  async saveProject(event: Event): Promise<void> {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const raw = new FormData(form);
@@ -84,39 +86,59 @@ export class AddProjectComponent implements OnInit {
     payload.set('category', String(raw.get('category') || '').trim());
     payload.set('skills', JSON.stringify(this.skills));
 
-    const thumb = raw.get('thumb') as File | null;
-    if (thumb && thumb.size > 0) {
-      payload.set('thumb', thumb);
-    }
-
-    const imgs = raw.getAll('imgs') as File[];
-    imgs.forEach((file) => {
-      if (file && file.size > 0) {
-        payload.append('imgs', file);
-      }
-    });
-
-    const video = raw.get('video') as File | null;
-    if (video && video.size > 0) {
-      payload.set('video', video);
-    }
-
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    const request$ = this.projectId
-      ? this.http.put(`${this.baseURL}/projects/updateProject/${this.projectId}`, payload)
-      : this.http.post(`${this.baseURL}/projects/addProject`, payload);
+    try {
+      const driveSession = await this.driveUpload.getDriveSession();
 
-    request$.subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        this.router.navigate(['/portfolio']);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        this.errorMessage = err?.error?.error || 'Failed to save project.';
+      const thumb = raw.get('thumb') as File | null;
+      if (thumb && thumb.size > 0) {
+        if (driveSession.enabled) {
+          payload.set('thumb', await this.driveUpload.uploadFileDirect(thumb, driveSession));
+        } else {
+          payload.set('thumb', thumb);
+        }
       }
-    });
+
+      const imgs = (raw.getAll('imgs') as File[]).filter((f) => f && f.size > 0);
+      if (imgs.length > 0) {
+        if (driveSession.enabled) {
+          const uploadedImgs = await Promise.all(
+            imgs.map((file) => this.driveUpload.uploadFileDirect(file, driveSession))
+          );
+          payload.set('imgs', JSON.stringify(uploadedImgs));
+        } else {
+          imgs.forEach((file) => payload.append('imgs', file));
+        }
+      }
+
+      const video = raw.get('video') as File | null;
+      if (video && video.size > 0) {
+        if (driveSession.enabled) {
+          payload.set('video', await this.driveUpload.uploadFileDirect(video, driveSession));
+        } else {
+          payload.set('video', video);
+        }
+      }
+
+      const request$ = this.projectId
+        ? this.http.put(`${this.baseURL}/projects/updateProject/${this.projectId}`, payload)
+        : this.http.post(`${this.baseURL}/projects/addProject`, payload);
+
+      request$.subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.router.navigate(['/portfolio']);
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.errorMessage = err?.error?.error || 'Failed to save project.';
+        }
+      });
+    } catch (err: any) {
+      this.isSubmitting = false;
+      this.errorMessage = err?.message || 'Failed to upload project media to Google Drive.';
+    }
   }
 }

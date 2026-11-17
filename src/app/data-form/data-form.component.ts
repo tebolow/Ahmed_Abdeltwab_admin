@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { DataService } from '../services/data/data.service';
+import { DriveUploadService } from '../services/drive/drive-upload.service';
 import { TechIconComponent } from '../shared/tech-icon/tech-icon.component';
 
 @Component({
@@ -14,6 +15,7 @@ import { TechIconComponent } from '../shared/tech-icon/tech-icon.component';
 export class DataFormComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private dataService = inject(DataService);
+  private driveUpload = inject(DriveUploadService);
 
   baseURL = environment.apiUrl;
   staticURL = environment.staticURL;
@@ -122,7 +124,7 @@ export class DataFormComponent implements OnInit, OnDestroy {
     return this.resolveMedia(this.existingData?.aboutImage, './profile.JPG');
   }
 
-  submitData(event: Event): void {
+  async submitData(event: Event): Promise<void> {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const raw = new FormData(form);
@@ -133,31 +135,43 @@ export class DataFormComponent implements OnInit, OnDestroy {
     });
     payload.set('toolkit', JSON.stringify(this.toolkit));
 
-    ['logo', 'homeImage', 'aboutImage', 'cv'].forEach((fileField) => {
-      const file = raw.get(fileField) as File | null;
-      if (file && file.size > 0) {
-        payload.set(fileField, file);
-      }
-    });
-
     this.isSubmitting = true;
     this.statusMessage = '';
     this.isError = false;
 
-    this.http.post<any>(`${this.baseURL}/data/editData`, payload).subscribe({
-      next: (res) => {
-        this.isSubmitting = false;
-        this.existingData = res?.data || this.existingData;
-        if (res?.data) {
-          this.dataService.setData(res.data);
+    try {
+      const driveSession = await this.driveUpload.getDriveSession();
+      for (const fileField of ['logo', 'homeImage', 'aboutImage', 'cv']) {
+        const file = raw.get(fileField) as File | null;
+        if (file && file.size > 0) {
+          if (driveSession.enabled) {
+            const drivePath = await this.driveUpload.uploadFileDirect(file, driveSession);
+            payload.set(fileField, drivePath);
+          } else {
+            payload.set(fileField, file);
+          }
         }
-        this.statusMessage = 'Site data saved successfully!';
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        this.isError = true;
-        this.statusMessage = err?.error?.error || 'Failed to save site data.';
       }
-    });
+
+      this.http.post<any>(`${this.baseURL}/data/editData`, payload).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.existingData = res?.data || this.existingData;
+          if (res?.data) {
+            this.dataService.setData(res.data);
+          }
+          this.statusMessage = 'Site data saved successfully!';
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.isError = true;
+          this.statusMessage = err?.error?.error || 'Failed to save site data.';
+        }
+      });
+    } catch (err: any) {
+      this.isSubmitting = false;
+      this.isError = true;
+      this.statusMessage = err?.message || 'Failed to upload media to Google Drive.';
+    }
   }
 }
